@@ -1,0 +1,69 @@
+# Adaptive profile — activates a coherent feature set; per-feature override below
+profile: auto              # auto | tiny | small | medium | large | xlarge | custom
+
+# Auto-detection thresholds (only consulted when profile: auto)
+profile_thresholds:
+  tiny:   { max_files: 50,    max_loc: 2000 }
+  small:  { max_files: 500,   max_loc: 20000 }
+  medium: { max_files: 5000,  max_loc: 200000 }
+  large:  { max_files: 50000, max_loc: 2000000 }
+  # > large.max_files OR > large.max_loc => xlarge
+
+# Per-feature overrides; "auto" defers to profile defaults (see spec §2.5)
+features:
+  code_graph: auto         # auto | full | symbols-only | off
+  memory_compaction: auto  # auto | on | off
+  multi_agent: auto        # auto | on | off
+  worktree_isolation: auto # auto | on | off
+  validator_gate: auto     # auto | mandatory | optional | off
+
+codegraph:
+  exclude:
+    - "**/node_modules/**"
+    - "**/.venv/**"
+    - "**/dist/**"
+    - "**/build/**"
+    - "**/target/**"
+    - "**/.git/**"
+    - "**/vendor/**"
+  languages:
+    tier1: [python, javascript, typescript, tsx, go, java, rust, c, cpp]
+    tier2: []
+  budgets:
+    envelope_default_tokens: 2000
+    impact_max_depth: 3
+  scan:
+    workers: auto
+    batch_size: 5000
+
+memory:
+  budgets:
+    checkpoint:  { soft: 2000,  hard: 4000  }
+    sessions:    { soft: 8000,  hard: 16000 }
+    glossary:    { soft: 4000,  hard: 8000  }
+    learnings:   { soft: 4000,  hard: 8000  }
+  compaction_model: claude-sonnet-4-6
+  archive_after_days: 7
+
+dispatch:
+  worktree_isolation: auto
+  worktree_dir: .worktrees
+  max_retries_per_subtask: 2
+
+models:
+  fast:    claude-haiku-4-5
+  standard: claude-sonnet-4-6
+  thinking: claude-opus-4-6
+  fallback:
+    fast:    gpt-4.1
+    standard: gpt-5.3-codex
+    thinking: gpt-5.5
+
+routing:
+  critical_path_globs:
+    - "**/auth/**"
+    - "**/payments/**"
+    - "**/crypto/**"
+    - "**/security/**"
+    - "**/migrations/**"
+  deep_keywords: [refactor, redesign, architecture, migrate, rewrite]
