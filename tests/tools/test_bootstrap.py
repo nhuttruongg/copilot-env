@@ -127,6 +127,30 @@ def test_bootstrap_idempotent(tmp_path):
     assert "profile: tiny" in config.read_text()
 
 
+def test_bootstrap_resolves_profile_auto_in_existing_config(tmp_path):
+    """If config.yaml already exists with profile:auto (copied from template),
+    bootstrap must rewrite the profile line to the detected value."""
+    repo = make_repo(tmp_path)
+    config = repo / ".github" / "config.yaml"
+    config.write_text("profile: auto\nfeatures: {}\n")
+    run_bootstrap(repo, {"BOOTSTRAP_PROFILE_OVERRIDE": "small",
+                         "BOOTSTRAP_NO_VENV": "1", "BOOTSTRAP_NO_SCAN": "1"})
+    text = config.read_text()
+    assert "profile: small" in text
+    assert "profile: auto" not in text
+
+
+def test_bootstrap_preserves_explicit_profile_in_existing_config(tmp_path):
+    """If config.yaml already has an explicit profile (not auto), bootstrap
+    must not change it."""
+    repo = make_repo(tmp_path)
+    config = repo / ".github" / "config.yaml"
+    config.write_text("profile: medium\nfeatures: {}\n")
+    run_bootstrap(repo, {"BOOTSTRAP_PROFILE_OVERRIDE": "tiny",
+                         "BOOTSTRAP_NO_VENV": "1", "BOOTSTRAP_NO_SCAN": "1"})
+    assert "profile: medium" in config.read_text()
+
+
 def test_bootstrap_profile_detection_uses_file_count(tmp_path):
     repo = make_repo(tmp_path)
     # Add enough files to cross the tiny threshold (>50 files)
