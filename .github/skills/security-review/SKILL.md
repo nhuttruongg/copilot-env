@@ -1,9 +1,23 @@
 ---
 name: security-review
-description: "Security-focused code review following OWASP guidelines. Check for injection, auth issues, secrets exposure, and supply chain risks."
+description: "Security-focused code review following OWASP guidelines. Uses codegraph impact analysis to assess blast radius. Auto-invoked on critical-path files."
+triggers:
+  - "security audit"
+  - "OWASP check"
+  - "critical path review"
 ---
 
 # Security Review
+
+## Scope Detection
+
+Identify critical-path files via codegraph:
+```bash
+python3 .github/tools/codegraph.py search "auth" --db .github/.cache/codegraph.db
+python3 .github/tools/codegraph.py impact <critical-file> --db .github/.cache/codegraph.db
+```
+
+Files matching `auth/**`, `payments/**`, `crypto/**`, `security/**`, `migrations/**` get line-by-line review.
 
 ## Checklist
 

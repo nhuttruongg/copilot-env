@@ -46,21 +46,37 @@ Match ceremony to complexity:
 
 ## Available Agents
 
-| Agent | Purpose | When to Use |
-|-------|---------|-------------|
-| @conductor | Orchestrate complex multi-phase tasks | Deep complexity tasks |
-| @planner | Research and create implementation plans | Before complex implementations |
-| @implementer | Execute code changes with TDD | Writing/modifying code |
-| @reviewer | Audit code quality and security | After implementation |
-| @explorer | Map and explain codebase | Understanding unfamiliar code |
-| @debugger | Systematic bug investigation | When something is broken |
+| Agent | Model | Purpose | When to Use |
+|-------|-------|---------|-------------|
+| @router | Sonnet 4.6 | Entry point — classify, route, decompose, dispatch | Default for all tasks (replaces @conductor) |
+| @planner | Opus 4.6 | Deep research + subtask DAG with risk register | Complex implementations |
+| @architect | Opus 4.6 | Greenfield design, large-scale restructuring | New systems, major refactors |
+| @implementer | Sonnet 4.6 | TDD execution within one task brief | Writing/modifying code |
+| @reviewer | Sonnet 4.6 | Two-stage review (spec-compliance + code-quality) | After implementation |
+| @validator | Opus 4.6 | Final verification gate with Iron Law | After all tasks complete |
+| @explorer | Haiku 4.5 | Code understanding via codegraph queries | Understanding unfamiliar code |
+| @cartographer | Haiku 4.5 | Code-graph queries on demand | Symbol lookup, dependency tracing |
+| @scribe | Sonnet 4.6 | Memory compaction, checkpoint, project-context | Session end, /init |
+| @debugger | Sonnet 4.6 | Four Phases systematic debugging | When something is broken |
+| @security | Opus 4.6 | Critical-path security audit (OWASP) | Auto-invoked on auth/crypto/payments |
 
 ## Available Prompts
 
 | Prompt | Purpose |
 |--------|---------|
-| /implement | Full workflow: understand → plan → code → verify |
+| /init | One-shot setup: bootstrap + scan + project-context |
+| /implement | Default entry point — auto-routes by complexity |
+| /plan | Force deep planning (skip routing) |
+| /validate | Final verification gate on a session |
 | /review | Code review with severity-tagged findings |
 | /test | Generate comprehensive tests (happy, edge, error) |
 | /explain | Explain code with data flow and component mapping |
-| /refactor | Improve code structure without changing behavior |
+| /refactor | Refactor pipeline with behavior preservation |
+| /debug | Systematic bug investigation (Four Phases) |
+| /security-review | Critical-path security audit |
+| /end-session | Checkpoint + compact + archive |
+| /resume | Load prior session and continue |
+| /compact-memory | Force memory compaction |
+| /recall | Quick search across project memory |
+| /graph | Quick code-graph query |
+| /status | Print project status (graph, memory, sessions) |

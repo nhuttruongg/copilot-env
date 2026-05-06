@@ -1,9 +1,18 @@
 ---
 name: tdd
-description: "Test-Driven Development workflow. Write failing tests first, implement minimal code, verify. Use when implementing features that need test coverage."
+description: "Test-Driven Development with the watched-fail Iron Law. Write failing tests first, watch them fail for the expected reason, implement minimal code, verify."
+triggers:
+  - "write tests first"
+  - "TDD"
+  - "test driven"
 ---
 
 # TDD Workflow
+
+## Iron Law
+
+> **NO PRODUCTION CODE WITHOUT A FAILING TEST FIRST.**
+> Write the test. Run it. Watch it fail for the EXPECTED reason (not an import error, not a syntax error — the actual assertion failure). Only then write the production code.
 
 ## Cycle
 

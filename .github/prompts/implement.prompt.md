@@ -1,8 +1,19 @@
 ---
-description: "Full implementation workflow: understand → plan → implement → verify. Use for non-trivial tasks."
+description: "Default entry point. @router auto-classifies complexity (INSTANT/STANDARD/DEEP) and routes accordingly. For DEEP tasks, triggers full pipeline with planning, parallel implementation, and validation."
 ---
 
 Follow this workflow strictly:
+
+## Step 0: Route (auto)
+Invoke `@router` to classify complexity:
+- Load checkpoint: `python3 .github/tools/memory.py read checkpoint --budget 1500`
+- Check graph freshness: `python3 .github/tools/codegraph.py why-stale --db .github/.cache/codegraph.db`
+- Recall context: `python3 .github/tools/memory.py recall "<task keywords>"`
+- Classify → INSTANT / STANDARD / DEEP
+
+**INSTANT:** Skip to Step 3 — implement directly.
+**STANDARD:** Steps 1-5 below.
+**DEEP:** Full pipeline — @planner → task-batch → N×@implementer → @reviewer (×2) → @validator.
 
 ## Step 1: Understand
 - Read all relevant files before making changes

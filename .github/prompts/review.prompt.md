@@ -1,8 +1,15 @@
 ---
-description: "Review code changes for correctness, security, performance, and style. Provide actionable feedback."
+description: "Review code changes. For single tasks: combined correctness + quality check. For multi-task sessions: invoke @validator for cross-task consistency and verification gate."
 ---
 
-Review the specified code. Check systematically:
+Review the specified code. For multi-task sessions, use `/validate` instead.
+
+Check blast radius first:
+```bash
+python3 .github/tools/codegraph.py impact <changed-file> --db .github/.cache/codegraph.db
+```
+
+Then check systematically:
 
 1. **Correctness**: Logic errors, unhandled edge cases, async issues, regressions
 2. **Security**: Injection risks, exposed secrets, auth gaps, 🔴 critical path files

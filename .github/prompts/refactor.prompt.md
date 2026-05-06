@@ -1,10 +1,16 @@
 ---
-description: "Refactor code to improve clarity, reduce duplication, or improve structure without changing behavior."
+description: "Large refactor pipeline: @planner produces refactor plan → N×@implementer executes with TDD → @validator verifies behavior preserved. For small refactors, implements directly."
 ---
 
 Refactoring rules:
 
-1. **Read first** — understand current implementation fully
+0. **Assess scope** — if the refactor touches ≥3 files or changes interfaces, invoke `@planner` first for a refactor plan. Otherwise, proceed directly.
+
+1. **Read first** — understand current implementation fully. Use codegraph:
+   ```bash
+   python3 .github/tools/codegraph.py envelope <target> --budget 2000 --db .github/.cache/codegraph.db
+   python3 .github/tools/codegraph.py impact <target-file> --db .github/.cache/codegraph.db
+   ```
 2. **Identify targets** — what specifically to improve (duplication, complexity, naming, structure)
 3. **Check tests** — ensure tests exist. If not, suggest adding them BEFORE refactoring
 4. **One change type at a time** — don't mix rename + restructure + optimize

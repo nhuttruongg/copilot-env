@@ -83,3 +83,37 @@ Default to the **simplest route** that fits. Most tasks are Instant or Standard.
 - Imperative commit messages: `fix:`, `feat:`, `refactor:`, `test:`, `docs:`
 - Keep commits focused on a single logical change
 - Do not commit generated files, build artifacts, or secrets
+
+## Tools — Code Graph & Memory
+
+This project has built-in tools at `.github/tools/`. Use them when available:
+
+### Code Graph (`codegraph.py`)
+- **Before modifying code**, get context: `codegraph.py envelope <symbol> --budget 2000`
+- **Check blast radius**: `codegraph.py impact <file>`
+- **Find symbols**: `codegraph.py find <name>`, `codegraph.py refs <name>`
+- **Check freshness**: `codegraph.py why-stale` (auto-update if >5% stale)
+- On `tiny` profile: graph disabled — use grep/find directly
+- On `small` profile: only `find`, `deps`, `search`, `module` available
+
+### Memory (`memory.py`)
+- **Start of session**: `memory.py read checkpoint --budget 1500`
+- **Recall prior context**: `memory.py recall "<keywords>"`
+- **Record insights**: `memory.py write learnings "<insight>"`
+- **Record decisions**: `memory.py write decisions "DEC-NNN: <decision>"`
+- **Check budgets**: `memory.py status`
+
+### Session (`session.py`)
+- **Track work**: `session.py log <event> <message>`
+- **List sessions**: `session.py list`
+
+All commands: `python3 .github/tools/<tool>.py <command> --db .github/.cache/codegraph.db`
+
+## Routing
+
+`@router` is the default entry point. It classifies complexity:
+- **INSTANT**: Single file, ≤30 lines → implement directly
+- **STANDARD**: 1-3 files, new feature → scope → implement → review
+- **DEEP**: Multi-module, critical-path, refactors → full pipeline with planning, validation gate
+
+Match ceremony to complexity. Most tasks are INSTANT or STANDARD.

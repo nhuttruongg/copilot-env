@@ -1,6 +1,10 @@
 ---
 name: codebase-scan
-description: "Scan and map the entire project: tech stack, architecture, conventions, entry points, dependencies. Run once at project start."
+description: "Scan and map the entire project using codegraph and bootstrap.sh: tech stack, architecture, conventions, entry points, dependencies. Run once at /init."
+triggers:
+  - "scan the codebase"
+  - "project analysis"
+  - "init setup"
 ---
 
 # Codebase Scan
@@ -13,6 +17,10 @@ Perform a comprehensive scan and output a structured project map.
 - Read `package.json`, `pyproject.toml`, `Cargo.toml`, `go.mod`, `pom.xml`, or equivalent
 - Identify: project name, language, framework, key dependencies
 - Check for monorepo (workspaces, turborepo, lerna, nx)
+- Run codegraph stats for quantitative overview:
+  ```bash
+  python3 .github/tools/codegraph.py stats --db .github/.cache/codegraph.db --json
+  ```
 
 ### 2. Directory Structure
 - Map top-level folders with purpose annotations
@@ -22,6 +30,11 @@ Perform a comprehensive scan and output a structured project map.
 - Find main entry files
 - Map route/endpoint definitions
 - Trace initialization flow
+- Use codegraph to identify key symbols:
+  ```bash
+  python3 .github/tools/codegraph.py search "main" --db .github/.cache/codegraph.db
+  python3 .github/tools/codegraph.py module src/ --db .github/.cache/codegraph.db
+  ```
 
 ### 4. Key Conventions
 - File naming pattern (kebab, camel, pascal)
